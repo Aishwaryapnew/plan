@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assessment Plan Table</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0 auto;
+            text-align: center;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        input {
+            width: 90%;
+            padding: 6px;
+            box-sizing: border-box;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .button-container {
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            text-transform: uppercase;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        #message {
+            text-align: center;
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Assessment Plan</h1>
+    <form method="POST" action="/exam_table/assessment_plan_view/">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <th>Components</th>
+                <th>Mid Sem Exam</th>
+                <th>Flexible Assessments (2 – 3 in number)</th>
+                <th>End Semester/Makeup Examination</th>
+            </tr>
+            <tr>
+                <th>Duration</th>
+                <td><input type="text" name="mid_duration" placeholder="Enter Duration"></td>
+                <td><input type="text" name="flexible_duration" placeholder="To Decide"></td>
+                <td><input type="text" name="end_duration" placeholder="Enter Duration"></td>
+            </tr>
+            <tr>
+                <th>Weightage</th>
+                <td><input type="text" name="mid_weightage" placeholder="Enter Weightage"></td>
+                <td><input type="text" name="flexible_weightage" placeholder="Enter Weightage"></td>
+                <td><input type="text" name="end_weightage" placeholder="Enter Weightage"></td>
+            </tr>
+            <tr>
+                <th>Typology of Questions</th>
+                <td><input type="text" name="mid_typology" placeholder="Enter Typology"></td>
+                <td><input type="text" name="flexible_typology" placeholder="Enter Typology"></td>
+                <td><input type="text" name="end_typology" placeholder="Enter Typology"></td>
+            </tr>
+            <tr>
+                <th>Pattern</th>
+                <td><input type="text" name="mid_pattern" placeholder="Enter Pattern"></td>
+                <td><input type="text" name="flexible_pattern" placeholder="Enter Pattern"></td>
+                <td><input type="text" name="end_pattern" placeholder="Enter Pattern"></td>
+            </tr>
+            <tr>
+                <th>Schedule</th>
+                <td><input type="text" name="mid_schedule" placeholder="Enter Schedule"></td>
+                <td><input type="text" name="flexible_schedule" placeholder="Enter Schedule"></td>
+                <td><input type="text" name="end_schedule" placeholder="Enter Schedule"></td>
+            </tr>
+            <tr>
+                <th>Topics Covered</th>
+                <td><input type="text" name="mid_topics" placeholder="Enter Topics"></td>
+                <td><input type="text" name="flexible_topics" placeholder="Enter Topics"></td>
+                <td><input type="text" name="end_topics" placeholder="Enter Topics"></td>
+            </tr>
+        </table>
+    
+        <div class="button-container">
+            <button type="submit">Submit Plan</button>
+        </div>
+    
+        <p id="message"></p>
+    </form>
+    
