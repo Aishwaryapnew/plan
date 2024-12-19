@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Assessment Plan</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        form {
+            width: 60%;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section h2 {
+            color: #007bff;
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            text-transform: uppercase;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Edit Assessment Plan</h1>
+    <form method="POST" action="/updateprofile/{{ userdata.id }}/">
+        {% csrf_token %}
+        
+        <!-- Mid Sem Section -->
+        <div class="section">
+            <h2>Mid Semester Assessment</h2>
+            <label for="mid_duration">Duration:</label>
+            <input type="text" name="mid_duration" id="mid_duration" value="{{ userdata.mid_duration }}">
+
+            <label for="mid_weightage">Weightage:</label>
+            <input type="text" name="mid_weightage" id="mid_weightage" value="{{ userdata.mid_weightage }}">
+
+            <label for="mid_typology">Typology of Questions:</label>
+            <input type="text" name="mid_typology" id="mid_typology" value="{{ userdata.mid_typology }}">
+
+            <label for="mid_pattern">Pattern:</label>
+            <input type="text" name="mid_pattern" id="mid_pattern" value="{{ userdata.mid_pattern }}">
+
+            <label for="mid_schedule">Schedule:</label>
+            <input type="text" name="mid_schedule" id="mid_schedule" value="{{ userdata.mid_schedule }}">
+
+            <label for="mid_topics">Topics Covered:</label>
+            <input type="text" name="mid_topics" id="mid_topics" value="{{ userdata.mid_topics }}">
+        </div>
+
+        <!-- Flexible Assessment Section -->
+        <div class="section">
+            <h2>Flexible Assessment</h2>
+            <label for="flexible_duration">Duration:</label>
+            <input type="text" name="flexible_duration" id="flexible_duration" value="{{ userdata.flexible_duration }}">
+
+            <label for="flexible_weightage">Weightage:</label>
+            <input type="text" name="flexible_weightage" id="flexible_weightage" value="{{ userdata.flexible_weightage }}">
+
+            <label for="flexible_typology">Typology of Questions:</label>
+            <input type="text" name="flexible_typology" id="flexible_typology" value="{{ userdata.flexible_typology }}">
+
+            <label for="flexible_pattern">Pattern:</label>
+            <input type="text" name="flexible_pattern" id="flexible_pattern" value="{{ userdata.flexible_pattern }}">
+
+            <label for="flexible_schedule">Schedule:</label>
+            <input type="text" name="flexible_schedule" id="flexible_schedule" value="{{ userdata.flexible_schedule }}">
+
+            <label for="flexible_topics">Topics Covered:</label>
+            <input type="text" name="flexible_topics" id="flexible_topics" value="{{ userdata.flexible_topics }}">
+        </div>
+
+        <!-- End Semester Section -->
+        <div class="section">
+            <h2>End Semester/Makeup Examination</h2>
+            <label for="end_duration">Duration:</label>
+            <input type="text" name="end_duration" id="end_duration" value="{{ userdata.end_duration }}">
+
+            <label for="end_weightage">Weightage:</label>
+            <input type="text" name="end_weightage" id="end_weightage" value="{{ userdata.end_weightage }}">
+
+            <label for="end_typology">Typology of Questions:</label>
+            <input type="text" name="end_typology" id="end_typology" value="{{ userdata.end_typology }}">
+
+            <label for="end_pattern">Pattern:</label>
+            <input type="text" name="end_pattern" id="end_pattern" value="{{ userdata.end_pattern }}">
+
+            <label for="end_schedule">Schedule:</label>
+            <input type="text" name="end_schedule" id="end_schedule" value="{{ userdata.end_schedule }}">
+
+            <label for="end_topics">Topics Covered:</label>
+            <input type="text" name="end_topics" id="end_topics" value="{{ userdata.end_topics }}">
+        </div>
+
+        <button type="submit">Update Plan</button>
+    </form>
+</body>
+</html>
