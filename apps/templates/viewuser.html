@@ -5,45 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Assessment Plan Table</title>
     <style>
+        /* General Styles */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
+            font-family: 'Times New Roman', serif;
+            background-color: #f4f1eb;
             margin: 0;
             padding: 20px;
+            color: #333;
+            overflow-x: hidden;
         }
 
         h1 {
             text-align: center;
-            color: #333;
-            margin-bottom: 20px;
+            color: #2a2a2a;
+            margin-bottom: 30px;
+            font-size: 36px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-bottom: 2px solid #6b4f1f;
+            padding-bottom: 10px;
+            opacity: 0;
+            transform: translateX(-100%);
+            animation: slideInFromLeft 1s forwards ease-out;
         }
 
+        /* Table Styles */
         table {
-            width: 100%;
+            width: 90%;
+            margin: 50px auto;
             border-collapse: collapse;
-            margin: 0 auto;
-            text-align: center;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(50px);
+            animation: slideUp 1s forwards ease-out;
         }
 
         th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: center;
+            padding: 18px 25px;
+            text-align: left;
+            font-size: 16px;
+            border-bottom: 1px solid #ddd;
         }
 
         th {
-            background-color: #007bff;
-            color: white;
+            background-color: #6b4f1f;
+            color: #fff;
+            font-size: 18px;
+            text-align: center;
             text-transform: uppercase;
-            font-size: 14px;
         }
 
         tr:nth-child(even) {
-            background-color: #f2f2f2;
+            background-color: #f9f9f9;
         }
 
-        /* Button styling */
+        tr:hover {
+            background-color: #e9e9e9;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Button Styles */
         .button-link {
             display: inline-block;
             padding: 10px 20px;
@@ -51,76 +75,203 @@
             text-decoration: none;
             font-size: 14px;
             font-weight: bold;
-            border-radius: 5px;
+            border-radius: 30px;
             text-align: center;
             cursor: pointer;
+            transition: all 0.3s ease;
         }
 
         /* Edit Button */
         .edit-btn {
-            background-color: #007bff;
+            background-color: #4CAF50;
             color: white;
+            box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInFromBottom 1s forwards ease-out;
         }
 
         .edit-btn:hover {
-            background-color: #0056b3;
+            background-color: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(76, 175, 80, 0.4);
         }
 
         /* Delete Button */
         .delete-btn {
-            background-color: #dc3545;
+            background-color: #f44336;
             color: white;
+            box-shadow: 0 4px 8px rgba(244, 67, 54, 0.3);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInFromBottom 1s 0.2s forwards ease-out;
         }
 
         .delete-btn:hover {
-            background-color: #c82333;
+            background-color: #e53935;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(244, 67, 54, 0.4);
         }
 
-        /* CSS to hide the buttons by default */
-        .hide-buttons td a {
-            display: none;
+        /* No Data Message */
+        .no-data-message {
+            text-align: center;
+            color: #333;
+            font-size: 18px;
+            margin-top: 30px;
+            font-weight: bold;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: slideUp 1s 0.5s forwards ease-out;
         }
 
-        /* CSS for showing buttons only for first 3 rows */
-        .show-buttons td a {
-            display: inline-block;
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            h1 {
+                font-size: 30px;
+            }
+            table {
+                width: 100%;
+            }
+            th, td {
+                padding: 12px 18px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 26px;
+            }
+            table {
+                width: 100%;
+                font-size: 14px;
+            }
+            th, td {
+                padding: 10px 15px;
+            }
+            .button-link {
+                font-size: 12px;
+                padding: 8px 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 22px;
+            }
+            table {
+                width: 100%;
+                font-size: 12px;
+            }
+            th, td {
+                padding: 8px 12px;
+            }
+            .button-link {
+                font-size: 10px;
+                padding: 6px 12px;
+            }
+        }
+
+        /* Animations */
+        @keyframes slideInFromLeft {
+            0% {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInFromBottom {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
 <body>
     <h1>Assessment Plan - Submitted Data</h1>
-    
+    {% if userdata %}
     <table>
         <thead>
             <tr>
                 <th>Component</th>
-                <th>Duration</th>
-                <th>Weightage</th>
-                <th>Typology of Questions</th>
-                <th>Pattern</th>
-                <th>Schedule</th>
-                <th>Topics Covered</th>
-                <th>Action</th>
+                <th>Details</th>
             </tr>
         </thead>
         <tbody>
             {% for component in userdata %}
-            <tr class="{% if forloop.counter <= 3 %}show-buttons{% else %}hide-buttons{% endif %}">
+            <tr>
+                <td>Component</td>
                 <td>{{ component.component }}</td>
+            </tr>
+            <tr>
+                <td>Duration</td>
                 <td>{{ component.duration }}</td>
+            </tr>
+            <tr>
+                <td>Weightage</td>
                 <td>{{ component.weightage }}</td>
+            </tr>
+            <tr>
+                <td>Typology of Questions</td>
                 <td>{{ component.typology_of_questions }}</td>
+            </tr>
+            <tr>
+                <td>Pattern</td>
                 <td>{{ component.pattern }}</td>
+            </tr>
+            <tr>
+                <td>Schedule</td>
                 <td>{{ component.schedule }}</td>
+            </tr>
+            <tr>
+                <td>Topics Covered</td>
                 <td>{{ component.topics_covered }}</td>
+            </tr>
+            <tr>
+                <td>Actions</td>
                 <td>
-                    <a href="{% url 'edit' component.id %}" class="button-link edit-btn">Edit</a>
-                    <a href="{% url 'deleteprofile' component.id %}" class="button-link delete-btn">Delete</a>
-                 
+                    <!-- Edit Button -->
+                    <a href="{% url 'edit' component.id %}" class="button-link edit-btn" onclick="return confirmEdit()">Edit</a>
+                    <!-- Delete Button -->
+                    <a href="{% url 'deleteprofile' component.id %}" class="button-link delete-btn" onclick="return confirmDelete()">Delete</a>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+    {% else %}
+    <p class="no-data-message">No data has been submitted yet. Please add your assessment plan data.</p>
+    {% endif %}
+
+    <script>
+        function confirmDelete() {
+            return confirm("Are you sure you want to delete this assessment plan component?");
+        }
+
+        function confirmEdit() {
+            return confirm("Are you sure you want to edit this assessment plan component?");
+        }
+    </script>
 </body>
 </html>

@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Assessment Plan Table</title>
     <style>
+        /* General Styles */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             background-color: #f8f9fa;
             margin: 0;
             padding: 20px;
+            overflow-x: hidden;
         }
 
         h1 {
@@ -28,7 +30,7 @@
 
         th, td {
             border: 1px solid #ddd;
-            padding: 10px;
+            padding: 12px;
             text-align: center;
         }
 
@@ -37,6 +39,13 @@
             color: white;
             text-transform: uppercase;
             font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        th:hover {
+            background-color: #0056b3;
+            cursor: pointer;
+            transform: scale(1.05);
         }
 
         tr:nth-child(even) {
@@ -45,10 +54,19 @@
 
         input {
             width: 90%;
-            padding: 6px;
+            padding: 10px;
             box-sizing: border-box;
             text-align: center;
             font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #007bff;
+            outline: none;
+            transform: scale(1.02);
         }
 
         .button-container {
@@ -60,77 +78,124 @@
             background-color: #28a745;
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 12px 30px;
             font-size: 16px;
             cursor: pointer;
             border-radius: 5px;
             text-transform: uppercase;
+            transition: all 0.3s ease;
         }
 
         button:hover {
-            background-color: #218838;
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
-        #message {
-            text-align: center;
-            color: green;
-            font-weight: bold;
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
     <h1>Assessment Plan</h1>
-    <form method="POST" action="/exam_table/assessment_plan_view/">
+    <form id="assessmentPlanForm" method="POST" action="/exam_table/assessment_plan_view/">
         {% csrf_token %}
         <table>
             <tr>
                 <th>Components</th>
                 <th>Mid Sem Exam</th>
-                <th>Flexible Assessments (2 – 3 in number)</th>
+                <th>Flexible Assessments</th>
                 <th>End Semester/Makeup Examination</th>
             </tr>
-            <tr>
-                <th>Duration</th>
-                <td><input type="text" name="mid_duration" placeholder="Enter Duration"></td>
-                <td><input type="text" name="flexible_duration" placeholder="To Decide"></td>
-                <td><input type="text" name="end_duration" placeholder="Enter Duration"></td>
+            <!-- Non-editable rows -->
+            <tr id="midSemRow">
+                <th>Mid Sem Exam</th>
+                <td id="midSemDetails">
+                    2 hours, 30%, MCQ, 2 hours, Schedule: 01 Jan, Topics: Topics A, B
+                </td>
+                <td><button type="button" onclick="editRow('midSem')">Edit</button></td>
             </tr>
-            <tr>
-                <th>Weightage</th>
-                <td><input type="text" name="mid_weightage" placeholder="Enter Weightage"></td>
-                <td><input type="text" name="flexible_weightage" placeholder="Enter Weightage"></td>
-                <td><input type="text" name="end_weightage" placeholder="Enter Weightage"></td>
+
+            <tr id="flexibleRow">
+                <th>Flexible Assessments</th>
+                <td id="flexibleDetails">
+                    2 hours, 40%, MCQ, 3 hours, Schedule: 10 Jan, Topics: Topics C, D
+                </td>
+                <td><button type="button" onclick="editRow('flexible')">Edit</button></td>
             </tr>
-            <tr>
-                <th>Typology of Questions</th>
-                <td><input type="text" name="mid_typology" placeholder="Enter Typology"></td>
-                <td><input type="text" name="flexible_typology" placeholder="Enter Typology"></td>
-                <td><input type="text" name="end_typology" placeholder="Enter Typology"></td>
-            </tr>
-            <tr>
-                <th>Pattern</th>
-                <td><input type="text" name="mid_pattern" placeholder="Enter Pattern"></td>
-                <td><input type="text" name="flexible_pattern" placeholder="Enter Pattern"></td>
-                <td><input type="text" name="end_pattern" placeholder="Enter Pattern"></td>
-            </tr>
-            <tr>
-                <th>Schedule</th>
-                <td><input type="text" name="mid_schedule" placeholder="Enter Schedule"></td>
-                <td><input type="text" name="flexible_schedule" placeholder="Enter Schedule"></td>
-                <td><input type="text" name="end_schedule" placeholder="Enter Schedule"></td>
-            </tr>
-            <tr>
-                <th>Topics Covered</th>
-                <td><input type="text" name="mid_topics" placeholder="Enter Topics"></td>
-                <td><input type="text" name="flexible_topics" placeholder="Enter Topics"></td>
-                <td><input type="text" name="end_topics" placeholder="Enter Topics"></td>
+
+            <tr id="endSemRow">
+                <th>End Sem Exam</th>
+                <td id="endSemDetails">
+                    3 hours, 30%, MCQ, 2 hours, Schedule: 15 Jan, Topics: Topics E, F
+                </td>
+                <td><button type="button" onclick="editRow('endSem')">Edit</button></td>
             </tr>
         </table>
-    
         <div class="button-container">
             <button type="submit">Submit Plan</button>
         </div>
-    
-        <p id="message"></p>
     </form>
-    
+
+    <!-- Editable Forms -->
+    <div id="midSemEdit" class="hidden">
+        <h3>Mid Sem Exam</h3>
+        <input type="text" id="midDuration" value="2 hours" placeholder="Enter Duration">
+        <input type="text" id="midWeightage" value="30%" placeholder="Enter Weightage">
+        <input type="text" id="midTypology" value="MCQ" placeholder="Enter Typology">
+        <input type="text" id="midPattern" value="2 hours" placeholder="Enter Pattern">
+        <input type="text" id="midSchedule" value="01 Jan" placeholder="Enter Schedule">
+        <input type="text" id="midTopics" value="Topics A, B" placeholder="Enter Topics">
+        <button type="button" onclick="saveChanges('midSem')">Save Changes</button>
+    </div>
+
+    <div id="flexibleEdit" class="hidden">
+        <h3>Flexible Assessments</h3>
+        <input type="text" id="flexibleDuration" value="2 hours" placeholder="Enter Duration">
+        <input type="text" id="flexibleWeightage" value="40%" placeholder="Enter Weightage">
+        <input type="text" id="flexibleTypology" value="MCQ" placeholder="Enter Typology">
+        <input type="text" id="flexiblePattern" value="3 hours" placeholder="Enter Pattern">
+        <input type="text" id="flexibleSchedule" value="10 Jan" placeholder="Enter Schedule">
+        <input type="text" id="flexibleTopics" value="Topics C, D" placeholder="Enter Topics">
+        <button type="button" onclick="saveChanges('flexible')">Save Changes</button>
+    </div>
+
+    <div id="endSemEdit" class="hidden">
+        <h3>End Sem Exam</h3>
+        <input type="text" id="endDuration" value="3 hours" placeholder="Enter Duration">
+        <input type="text" id="endWeightage" value="30%" placeholder="Enter Weightage">
+        <input type="text" id="endTypology" value="MCQ" placeholder="Enter Typology">
+        <input type="text" id="endPattern" value="2 hours" placeholder="Enter Pattern">
+        <input type="text" id="endSchedule" value="15 Jan" placeholder="Enter Schedule">
+        <input type="text" id="endTopics" value="Topics E, F" placeholder="Enter Topics">
+        <button type="button" onclick="saveChanges('endSem')">Save Changes</button>
+    </div>
+
+    <script>
+        function editRow(section) {
+            // Hide the non-editable rows
+            document.getElementById(section + 'Row').style.display = 'none';
+
+            // Show the editable form for the selected section
+            document.getElementById(section + 'Edit').style.display = 'block';
+        }
+
+        function saveChanges(section) {
+            // Get the values from the input fields
+            let duration = document.getElementById(section + 'Duration').value;
+            let weightage = document.getElementById(section + 'Weightage').value;
+            let typology = document.getElementById(section + 'Typology').value;
+            let pattern = document.getElementById(section + 'Pattern').value;
+            let schedule = document.getElementById(section + 'Schedule').value;
+            let topics = document.getElementById(section + 'Topics').value;
+
+            // Update the table with the new values
+            document.getElementById(section + 'Details').innerText = `${duration}, ${weightage}, ${typology}, ${pattern}, Schedule: ${schedule}, Topics: ${topics}`;
+
+            // Hide the editable form and show the updated row
+            document.getElementById(section + 'Edit').style.display = 'none';
+            document.getElementById(section + 'Row').style.display = 'table-row';
+        }
+    </script>
+</body>
+</html>

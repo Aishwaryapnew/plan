@@ -85,63 +85,61 @@ def edit(request,id):
 
 def updateprofile(request, id):
     if request.method == 'POST':
-        # Get values for Mid Sem Exam
-        vmid_duration = request.POST['mid_duration']
-        vmid_weightage = request.POST['mid_weightage']
-        vmid_typology = request.POST['mid_typology']
-        vmid_pattern = request.POST['mid_pattern']
-        vmid_schedule = request.POST['mid_schedule']
-        vmid_topics = request.POST['mid_topics']
+        form_type = request.POST.get('form_type')  # Get which form was submitted
 
-        # Get values for Flexible Assessments
-        vflexible_duration = request.POST['flexible_duration']
-        vflexible_weightage = request.POST['flexible_weightage']
-        vflexible_typology = request.POST['flexible_typology']
-        vflexible_pattern = request.POST['flexible_pattern']
-        vflexible_schedule = request.POST['flexible_schedule']
-        vflexible_topics = request.POST['flexible_topics']
-
-        # Get values for End Semester/Makeup Examination
-        vend_duration = request.POST['end_duration']
-        vend_weightage = request.POST['end_weightage']
-        vend_typology = request.POST['end_typology']
-        vend_pattern = request.POST['end_pattern']
-        vend_schedule = request.POST['end_schedule']
-        vend_topics = request.POST['end_topics']
-
-        # Retrieve the ExamComponent object using the id for the Mid Sem Exam
+        # Retrieve the ExamComponent object using the id
         user = get_object_or_404(ExamComponent, id=id)
-        user.duration = vmid_duration
-        user.weightage = vmid_weightage
-        user.typology_of_questions = vmid_typology
-        user.pattern = vmid_pattern
-        user.schedule = vmid_schedule
-        user.topics_covered = vmid_topics
-        user.save()
-       
-        # Update Flexible Assessments
-        ExamComponent.objects.create(
-            component='Flexible Assessments',
-            duration=vflexible_duration,
-            weightage=vflexible_weightage,
-            typology_of_questions=vflexible_typology,
-            pattern=vflexible_pattern,
-            schedule=vflexible_schedule,
-            topics_covered=vflexible_topics
-        )
-       
-        # Update End Semester/Makeup Examination
-        ExamComponent.objects.create(
-            component='End Semester/Makeup Examination',
-            duration=vend_duration,
-            weightage=vend_weightage,
-            typology_of_questions=vend_typology,
-            pattern=vend_pattern,
-            schedule=vend_schedule,
-            topics_covered=vend_topics
-        )
+        
+        if form_type == 'mid_sem_form':
+            # Update values for Mid Sem Exam
+            user.duration = request.POST.get('mid_duration', user.duration)
+            user.weightage = request.POST.get('mid_weightage', user.weightage)
+            user.typology_of_questions = request.POST.get('mid_typology', user.typology_of_questions)
+            user.pattern = request.POST.get('mid_pattern', user.pattern)
+            user.schedule = request.POST.get('mid_schedule', user.schedule)
+            user.topics_covered = request.POST.get('mid_topics', user.topics_covered)
+            user.save()
+
+        elif form_type == 'flexible_assessment_form':
+            # Retrieve or update Flexible Assessment
+            flexible_assessment, created = ExamComponent.objects.get_or_create(component='Flexible Assessments', defaults={
+                'duration': request.POST.get('flexible_duration', ''),
+                'weightage': request.POST.get('flexible_weightage', ''),
+                'typology_of_questions': request.POST.get('flexible_typology', ''),
+                'pattern': request.POST.get('flexible_pattern', ''),
+                'schedule': request.POST.get('flexible_schedule', ''),
+                'topics_covered': request.POST.get('flexible_topics', ''),
+            })
+            if not created:
+                flexible_assessment.duration = request.POST.get('flexible_duration', flexible_assessment.duration)
+                flexible_assessment.weightage = request.POST.get('flexible_weightage', flexible_assessment.weightage)
+                flexible_assessment.typology_of_questions = request.POST.get('flexible_typology', flexible_assessment.typology_of_questions)
+                flexible_assessment.pattern = request.POST.get('flexible_pattern', flexible_assessment.pattern)
+                flexible_assessment.schedule = request.POST.get('flexible_schedule', flexible_assessment.schedule)
+                flexible_assessment.topics_covered = request.POST.get('flexible_topics', flexible_assessment.topics_covered)
+                flexible_assessment.save()
+
+        elif form_type == 'end_sem_form':
+            # Retrieve or update End Semester Assessment
+            end_sem_exam, created = ExamComponent.objects.get_or_create(component='End Semester/Makeup Examination', defaults={
+                'duration': request.POST.get('end_duration', ''),
+                'weightage': request.POST.get('end_weightage', ''),
+                'typology_of_questions': request.POST.get('end_typology', ''),
+                'pattern': request.POST.get('end_pattern', ''),
+                'schedule': request.POST.get('end_schedule', ''),
+                'topics_covered': request.POST.get('end_topics', ''),
+            })
+            if not created:
+                end_sem_exam.duration = request.POST.get('end_duration', end_sem_exam.duration)
+                end_sem_exam.weightage = request.POST.get('end_weightage', end_sem_exam.weightage)
+                end_sem_exam.typology_of_questions = request.POST.get('end_typology', end_sem_exam.typology_of_questions)
+                end_sem_exam.pattern = request.POST.get('end_pattern', end_sem_exam.pattern)
+                end_sem_exam.schedule = request.POST.get('end_schedule', end_sem_exam.schedule)
+                end_sem_exam.topics_covered = request.POST.get('end_topics', end_sem_exam.topics_covered)
+                end_sem_exam.save()
 
         # Redirect after successful update
         return redirect("viewuser")
+    
     
     return render("viewuser")  # Or render the edit page if needed

@@ -6,25 +6,33 @@
     <title>Edit Assessment Plan</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fc;
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
         }
 
         h1 {
             text-align: center;
-            color: #333;
-            margin-bottom: 20px;
+            color: #2C3E50;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
         }
 
         form {
-            width: 60%;
+            width: 100%;
+            max-width: 800px;
             margin: 0 auto;
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease-in-out;
         }
 
         .section {
@@ -32,111 +40,304 @@
         }
 
         .section h2 {
-            color: #007bff;
-            margin-bottom: 15px;
+            color: #34495E;
+            font-size: 1.7rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            font-weight: bold;
         }
 
         label {
             display: block;
-            margin: 10px 0 5px;
+            margin-bottom: 8px;
+            font-size: 1rem;
+            color: #34495E;
         }
 
         input[type="text"] {
             width: 100%;
             padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            margin-bottom: 18px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1rem;
+            background-color: #f9f9f9;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            border-color: #2980B9;
+            outline: none;
+            background-color: #fff;
         }
 
         button {
-            background-color: #007bff;
+            background-color: #2980B9;
             color: white;
             border: none;
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 6px 12px;
+            font-size: 0.9rem;
             cursor: pointer;
-            border-radius: 5px;
+            border-radius: 6px;
             text-transform: uppercase;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 10px;
+            width: auto;
         }
 
         button:hover {
-            background-color: #0056b3;
+            background-color: #1D6FA4;
+            transform: translateY(-2px);
+        }
+
+        button:focus {
+            outline: none;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .confirmation-popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            animation: fadeInPopup 0.3s ease-in-out;
+        }
+
+        .popup-box {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            width: 320px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            animation: zoomIn 0.3s ease-in-out;
+        }
+
+        .popup-box button {
+            width: 48%;
+            padding: 10px;
+            font-size: 1rem;
+            margin: 10px 1%;
+            cursor: pointer;
+            border-radius: 6px;
+        }
+
+        .popup-box h3 {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            color: #34495E;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInPopup {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes zoomIn {
+            0% {
+                transform: scale(0.8);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            form {
+                padding: 20px;
+            }
+
+            .section h2 {
+                font-size: 1.5rem;
+            }
+
+            input[type="text"] {
+                font-size: 0.9rem;
+            }
+
+            button {
+                padding: 6px 12px;
+                font-size: 0.9rem;
+            }
+
+            .popup-box {
+                width: 80%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            form {
+                padding: 15px;
+            }
+
+            .section h2 {
+                font-size: 1.3rem;
+            }
+
+            input[type="text"] {
+                font-size: 0.8rem;
+            }
+
+            button {
+                padding: 6px 10px;
+                font-size: 0.8rem;
+            }
+
+            .popup-box {
+                width: 90%;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Edit Assessment Plan</h1>
-    <form method="POST" action="/updateprofile/{{ userdata.id }}/">
-        {% csrf_token %}
-        
-        <!-- Mid Sem Section -->
-        <div class="section">
-            <h2>Mid Semester Assessment</h2>
-            <label for="mid_duration">Duration:</label>
-            <input type="text" name="mid_duration" id="mid_duration" value="{{ userdata.mid_duration }}">
 
-            <label for="mid_weightage">Weightage:</label>
-            <input type="text" name="mid_weightage" id="mid_weightage" value="{{ userdata.mid_weightage }}">
+    <div>
+        <h1>Edit Assessment Plan</h1>
 
-            <label for="mid_typology">Typology of Questions:</label>
-            <input type="text" name="mid_typology" id="mid_typology" value="{{ userdata.mid_typology }}">
+        <!-- Mid Semester Section -->
+        <form method="POST" action="/updateprofile/{{ userdata.id }}/" id="mid-sem-form">
+            {% csrf_token %}
+            <input type="hidden" name="form_type" value="mid_sem_form">
+            <div class="section">
+                <h2>Mid Semester Assessment</h2>
+                <label for="mid_duration">Duration:</label>
+                <input type="text" name="mid_duration" id="mid_duration" value="{{ userdata.mid_duration }}">
 
-            <label for="mid_pattern">Pattern:</label>
-            <input type="text" name="mid_pattern" id="mid_pattern" value="{{ userdata.mid_pattern }}">
+                <label for="mid_weightage">Weightage:</label>
+                <input type="text" name="mid_weightage" id="mid_weightage" value="{{ userdata.mid_weightage }}">
 
-            <label for="mid_schedule">Schedule:</label>
-            <input type="text" name="mid_schedule" id="mid_schedule" value="{{ userdata.mid_schedule }}">
+                <label for="mid_typology">Typology of Questions:</label>
+                <input type="text" name="mid_typology" id="mid_typology" value="{{ userdata.mid_typology }}">
 
-            <label for="mid_topics">Topics Covered:</label>
-            <input type="text" name="mid_topics" id="mid_topics" value="{{ userdata.mid_topics }}">
-        </div>
+                <label for="mid_pattern">Pattern:</label>
+                <input type="text" name="mid_pattern" id="mid_pattern" value="{{ userdata.mid_pattern }}">
+
+                <label for="mid_schedule">Schedule:</label>
+                <input type="text" name="mid_schedule" id="mid_schedule" value="{{ userdata.mid_schedule }}">
+
+                <label for="mid_topics">Topics Covered:</label>
+                <input type="text" name="mid_topics" id="mid_topics" value="{{ userdata.mid_topics }}">
+
+                <div class="button-container">
+                    <button type="button" onclick="confirmUpdate('mid-sem-form')">Update Mid-Sem</button>
+                </div>
+            </div>
+        </form>
 
         <!-- Flexible Assessment Section -->
-        <div class="section">
-            <h2>Flexible Assessment</h2>
-            <label for="flexible_duration">Duration:</label>
-            <input type="text" name="flexible_duration" id="flexible_duration" value="{{ userdata.flexible_duration }}">
+        <form method="POST" action="/updateprofile/{{ userdata.id }}/" id="flexible-assessment-form">
+            {% csrf_token %}
+            <input type="hidden" name="form_type" value="flexible_assessment_form">
+            <div class="section">
+                <h2>Flexible Assessment</h2>
+                <label for="flexible_duration">Duration:</label>
+                <input type="text" name="flexible_duration" id="flexible_duration" value="{{ userdata.flexible_duration }}">
 
-            <label for="flexible_weightage">Weightage:</label>
-            <input type="text" name="flexible_weightage" id="flexible_weightage" value="{{ userdata.flexible_weightage }}">
+                <label for="flexible_weightage">Weightage:</label>
+                <input type="text" name="flexible_weightage" id="flexible_weightage" value="{{ userdata.flexible_weightage }}">
 
-            <label for="flexible_typology">Typology of Questions:</label>
-            <input type="text" name="flexible_typology" id="flexible_typology" value="{{ userdata.flexible_typology }}">
+                <label for="flexible_typology">Typology of Questions:</label>
+                <input type="text" name="flexible_typology" id="flexible_typology" value="{{ userdata.flexible_typology }}">
 
-            <label for="flexible_pattern">Pattern:</label>
-            <input type="text" name="flexible_pattern" id="flexible_pattern" value="{{ userdata.flexible_pattern }}">
+                <label for="flexible_pattern">Pattern:</label>
+                <input type="text" name="flexible_pattern" id="flexible_pattern" value="{{ userdata.flexible_pattern }}">
 
-            <label for="flexible_schedule">Schedule:</label>
-            <input type="text" name="flexible_schedule" id="flexible_schedule" value="{{ userdata.flexible_schedule }}">
+                <label for="flexible_schedule">Schedule:</label>
+                <input type="text" name="flexible_schedule" id="flexible_schedule" value="{{ userdata.flexible_schedule }}">
 
-            <label for="flexible_topics">Topics Covered:</label>
-            <input type="text" name="flexible_topics" id="flexible_topics" value="{{ userdata.flexible_topics }}">
-        </div>
+                <label for="flexible_topics">Topics Covered:</label>
+                <input type="text" name="flexible_topics" id="flexible_topics" value="{{ userdata.flexible_topics }}">
+
+                <div class="button-container">
+                    <button type="button" onclick="confirmUpdate('flexible-assessment-form')">Update Flexible</button>
+                </div>
+            </div>
+        </form>
 
         <!-- End Semester Section -->
-        <div class="section">
-            <h2>End Semester/Makeup Examination</h2>
-            <label for="end_duration">Duration:</label>
-            <input type="text" name="end_duration" id="end_duration" value="{{ userdata.end_duration }}">
+        <form method="POST" action="/updateprofile/{{ userdata.id }}/" id="end-sem-form">
+            {% csrf_token %}
+            <input type="hidden" name="form_type" value="end_sem_form">
+            <div class="section">
+                <h2>End Semester/Makeup Examination</h2>
+                <label for="end_duration">Duration:</label>
+                <input type="text" name="end_duration" id="end_duration" value="{{ userdata.end_duration }}">
 
-            <label for="end_weightage">Weightage:</label>
-            <input type="text" name="end_weightage" id="end_weightage" value="{{ userdata.end_weightage }}">
+                <label for="end_weightage">Weightage:</label>
+                <input type="text" name="end_weightage" id="end_weightage" value="{{ userdata.end_weightage }}">
 
-            <label for="end_typology">Typology of Questions:</label>
-            <input type="text" name="end_typology" id="end_typology" value="{{ userdata.end_typology }}">
+                <label for="end_typology">Typology of Questions:</label>
+                <input type="text" name="end_typology" id="end_typology" value="{{ userdata.end_typology }}">
 
-            <label for="end_pattern">Pattern:</label>
-            <input type="text" name="end_pattern" id="end_pattern" value="{{ userdata.end_pattern }}">
+                <label for="end_pattern">Pattern:</label>
+                <input type="text" name="end_pattern" id="end_pattern" value="{{ userdata.end_pattern }}">
 
-            <label for="end_schedule">Schedule:</label>
-            <input type="text" name="end_schedule" id="end_schedule" value="{{ userdata.end_schedule }}">
+                <label for="end_schedule">Schedule:</label>
+                <input type="text" name="end_schedule" id="end_schedule" value="{{ userdata.end_schedule }}">
 
-            <label for="end_topics">Topics Covered:</label>
-            <input type="text" name="end_topics" id="end_topics" value="{{ userdata.end_topics }}">
+                <label for="end_topics">Topics Covered:</label>
+                <input type="text" name="end_topics" id="end_topics" value="{{ userdata.end_topics }}">
+
+                <div class="button-container">
+                    <button type="button" onclick="confirmUpdate('end-sem-form')">Update End-Sem</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Confirmation Popup -->
+        <div id="confirmation-popup" class="confirmation-popup">
+            <div class="popup-box">
+                <h3>Are you sure you want to update this section?</h3>
+                <button id="confirm-btn">Yes, Update</button>
+                <button id="cancel-btn">Cancel</button>
+            </div>
         </div>
 
-        <button type="submit">Update Plan</button>
-    </form>
+    </div>
+
+    <script>
+        function confirmUpdate(formId) {
+            document.getElementById('confirmation-popup').style.display = 'flex';
+            document.getElementById('confirm-btn').onclick = function() {
+                document.getElementById(formId).submit();
+            };
+            document.getElementById('cancel-btn').onclick = function() {
+                document.getElementById('confirmation-popup').style.display = 'none';
+            };
+        }
+    </script>
 </body>
 </html>
